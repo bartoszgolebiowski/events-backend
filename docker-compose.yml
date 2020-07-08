@@ -1,0 +1,25 @@
+version: "2"
+services:
+  events-backend:
+    restart: always
+    build: .
+    environment:
+      - DB_USER=root
+      - DB_PASSWORD=root
+      - DB_NAME=events
+    ports:
+      - "3000:3000"
+    depends_on:
+      - events-backend-mongodb
+    links:
+      - events-backend-mongodb
+
+  events-backend-mongodb:
+    image: mongo
+    environment:
+      - MONGODB_USERNAME=root
+      - MONGODB_PASSWORD=root
+      - MONGODB_DATABASE=events
+      - MONGODB_ROOT_PASSWORD=root
+    ports:
+      - "27017:27017"
