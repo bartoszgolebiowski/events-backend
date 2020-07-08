@@ -20,7 +20,9 @@ const YupSchema = Yup.object().shape({
   id: Yup.string().required(),
   firstName: Yup.string().required("First Name is required"),
   lastName: Yup.string().required("Last Name is required"),
-  email: Yup.string().email("Email is required"),
+  email: Yup.string()
+    .email("Email is not fitting formula")
+    .required("Email is required"),
   date: Yup.date()
     .nullable()
     .required("Date is requried")
@@ -31,7 +33,7 @@ EventSchema.pre("validate", function (next) {
   return YupSchema.validate(this, { abortEarly: false })
     .then(() => res())
     .catch((err) => {
-      next(new Error(err.errors));
+      next(err.errors);
     });
 });
 
