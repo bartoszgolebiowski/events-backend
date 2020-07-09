@@ -1,6 +1,19 @@
 const mongoose = require("mongoose");
 const Yup = require("yup");
 
+const YupSchema = Yup.object().shape({
+  id: Yup.string().required(),
+  firstName: Yup.string().required("First Name is required"),
+  lastName: Yup.string().required("Last Name is required"),
+  email: Yup.string()
+    .email("Email is not fitting formula")
+    .required("Email is required"),
+  date: Yup.date()
+    .nullable()
+    .required("Date is requried")
+    .min(new Date(), "Date must be at least today"),
+});
+
 const EventSchema = new mongoose.Schema({
   firstName: {
     type: String,
@@ -14,19 +27,6 @@ const EventSchema = new mongoose.Schema({
   date: {
     type: String,
   },
-});
-
-const YupSchema = Yup.object().shape({
-  id: Yup.string().required(),
-  firstName: Yup.string().required("First Name is required"),
-  lastName: Yup.string().required("Last Name is required"),
-  email: Yup.string()
-    .email("Email is not fitting formula")
-    .required("Email is required"),
-  date: Yup.date()
-    .nullable()
-    .required("Date is requried")
-    .min(new Date(), "Date must be at least today"),
 });
 
 EventSchema.pre("validate", function (next) {
